@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento.csproj": {}
+    "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento.csproj": {}
   },
   "projects": {
-    "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento.csproj": {
+    "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento.csproj",
+        "projectUniqueName": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento.csproj",
         "projectName": "techchallenge-microservico-pagamento",
-        "projectPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento.csproj",
+        "projectPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento.csproj",
         "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\obj\\",
+        "outputPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,9 +40,21 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "Amazon.Lambda.AspNetCoreServer": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Amazon.Lambda.AspNetCoreServer.Hosting": {
+              "target": "Package",
+              "version": "[1.7.0, )"
+            },
             "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
               "target": "Package",
               "version": "[1.19.4, )"
+            },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[2.25.0, )"
             }
           },
           "imports": [
