@@ -22,10 +22,10 @@ jobs:
         dotnet-version: 8.0.200
 
     - name: Restore dependencies
-      run: dotnet restore ./src/techchallenge-microservico-pedido/techchallenge-microservico-pagamento.sln
+      run: dotnet restore ./src/techchallenge-microservico-pagamento/techchallenge-microservico-pagamento.sln
 
     - name: Build
-      run: dotnet build ./src/techchallenge-microservico-pedido/techchallenge-microservico-pagamento.sln --no-restore
+      run: dotnet build ./src/techchallenge-microservico-pagamento/techchallenge-microservico-pagamento.sln --no-restore
 
     #- name: Configure AWS Credentials
      # uses: aws-actions/configure-aws-credentials@v2
