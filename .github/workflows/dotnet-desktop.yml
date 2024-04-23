@@ -1,0 +1,57 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on: 
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.200
+
+    - name: Restore dependencies
+      run: dotnet restore ./src/techchallenge-microservico-pedido/techchallenge-microservico-pagamento.sln
+
+    - name: Build
+      run: dotnet build ./src/techchallenge-microservico-pedido/techchallenge-microservico-pagamento.sln --no-restore
+
+    #- name: Configure AWS Credentials
+     # uses: aws-actions/configure-aws-credentials@v2
+      #with:
+       # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+       # aws-region: ${{ secrets.AWS_REGION }}
+
+   # - name: Docker Login
+   #   run: aws ecr get-login-password --region ${{secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{ secrets.AWS_REGISTRY_URL }}
+
+   # - name: Build and Push Docker images
+    #  run: |
+      #  docker build -t notifier-img:latest -f Notifier/Dockerfile .
+  #      docker tag notifier-img:latest ${{ secrets.AWS_REGISTRY_URL }}:notifier-img
+    #    docker push ${{ secrets.AWS_REGISTRY_URL }}:notifier-img
+
+    #    docker build -t pagamentopedidonotificationconsumer-img:latest -f PagamentoPedidoNotificationConsumer/Dockerfile .
+    #    docker tag pagamentopedidonotificationconsumer-img:latest ${{ secrets.AWS_REGISTRY_URL }}:pagamentopedidonotificationconsumer-img
+    #    docker push ${{ secrets.AWS_REGISTRY_URL }}:pagamentopedidonotificationconsumer-img
+
+     #   docker build -t lanchonetetotem-img:latest -f TechChallenge-LanchoneteTotem/Dockerfile .
+      #  docker tag lanchonetetotem-img:latest ${{ secrets.AWS_REGISTRY_URL }}:lanchonetetotem-img
+      #  docker push ${{ secrets.AWS_REGISTRY_URL }}:lanchonetetotem-img
+
+   # - name: Deploy to EKS
+    #  run: |
+   #     aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
+   #    kubectl apply -f ./k8s/
