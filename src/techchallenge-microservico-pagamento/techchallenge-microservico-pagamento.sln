@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "techchallenge-microservico-pagamento", "techchallenge-microservico-pagamento\techchallenge-microservico-pagamento.csproj", "{CBE1034B-E617-435A-A844-AF43D87DD4FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "techchallenge-microservico-pagamento", "techchallenge-microservico-pagamento\techchallenge-microservico-pagamento.csproj", "{CBE1034B-E617-435A-A844-AF43D87DD4FF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02C012EC-B322-4C77-8D8B-9415F5EA158C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "techchallenge-ms-pagamento-test", "techchallenge-ms-pagamento-test\techchallenge-ms-pagamento-test.csproj", "{B096EEC3-2DC2-4E4F-9186-476354641FF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{CBE1034B-E617-435A-A844-AF43D87DD4FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBE1034B-E617-435A-A844-AF43D87DD4FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBE1034B-E617-435A-A844-AF43D87DD4FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B096EEC3-2DC2-4E4F-9186-476354641FF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B096EEC3-2DC2-4E4F-9186-476354641FF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B096EEC3-2DC2-4E4F-9186-476354641FF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B096EEC3-2DC2-4E4F-9186-476354641FF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B096EEC3-2DC2-4E4F-9186-476354641FF4} = {02C012EC-B322-4C77-8D8B-9415F5EA158C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {340A386B-E26A-45F4-B407-6837B0C10062}
