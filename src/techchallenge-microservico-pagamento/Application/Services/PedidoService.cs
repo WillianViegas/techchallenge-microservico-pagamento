@@ -3,6 +3,7 @@ using techchallenge_microservico_pagamento.Models;
 using techchallenge_microservico_pagamento.Repositories.Interfaces;
 using techchallenge_microservico_pagamento.Services.Interfaces;
 using techchallenge_microservico_pagamento.Repositories.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace techchallenge_microservico_pagamento.Services
 {

@@ -4,14 +4,79 @@
     "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento.csproj": {}
   },
   "projects": {
-    "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento.csproj": {
+    "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento.csproj",
-        "projectName": "techchallenge-microservico-pagamento",
-        "projectPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento.csproj",
+        "projectUniqueName": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Application\\Application.csproj",
+        "projectName": "Application",
+        "projectPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Application\\Application.csproj",
         "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\obj\\",
+        "outputPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Domain\\Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Domain\\Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Domain\\Domain.csproj",
+        "projectName": "Domain",
+        "projectPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +105,142 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "MongoDB.Bson": {
+              "target": "Package",
+              "version": "[2.25.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Infra\\Infra.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Infra\\Infra.csproj",
+        "projectName": "Infra",
+        "projectPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Infra\\Infra.csproj",
+        "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Infra\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Domain\\Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[2.25.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento.csproj",
+        "projectName": "techchallenge-microservico-pagamento",
+        "projectPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento.csproj",
+        "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\techchallenge-microservico-pagamento\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Application\\Application.csproj"
+              },
+              "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Domain\\Domain.csproj"
+              },
+              "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Infra\\Infra.csproj": {
+                "projectPath": "C:\\Users\\USER\\source\\repos\\techchallenge-microservico-pagamento\\src\\techchallenge-microservico-pagamento\\Infra\\Infra.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
             "Amazon.Lambda.AspNetCoreServer": {
               "target": "Package",
               "version": "[9.0.0, )"
@@ -55,6 +256,14 @@
             "MongoDB.Driver": {
               "target": "Package",
               "version": "[2.25.0, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            },
+            "Swashbuckle.AspNetCore.Annotations": {
+              "target": "Package",
+              "version": "[6.5.0, )"
             }
           },
           "imports": [
