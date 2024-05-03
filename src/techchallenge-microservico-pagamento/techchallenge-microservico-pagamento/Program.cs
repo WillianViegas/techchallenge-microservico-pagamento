@@ -32,10 +32,12 @@ builder.Services.AddSingleton<IDatabaseConfig>(sp => sp.GetRequiredService<IOpti
 builder.Services.AddControllers();
 
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
-
+builder.Services.AddSwaggerGen(opts => opts.EnableAnnotations());
 
 var app = builder.Build();
 
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseCors("AllowAll");
 app.UsePathBase(builder.Configuration["App:Pathbase"]);
 app.UseHttpsRedirection();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using techchallenge_microservico_pagamento.Models;
 using techchallenge_microservico_pagamento.Services;
 using techchallenge_microservico_pagamento.Services.Interfaces;
@@ -34,6 +35,13 @@ namespace techchallenge_microservico_pagamento.Controllers
 
 
         [HttpPost("/finalizarPedido")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        [SwaggerOperation(
+        Summary = "Finalizar pedido",
+        Description = "Finaliza o pedido gerando QRcode para pagamento")]
         public async Task<IResult> FinalizarPedido(string id)
         {
             try
