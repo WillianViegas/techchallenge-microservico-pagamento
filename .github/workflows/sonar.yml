@@ -44,5 +44,6 @@ jobs:
         shell: pwsh
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"WillianViegas_techchallenge-microservico-pagamento" /o:"willianviegas" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build --configuration Release
+          dotnet restore ./src/techchallenge-microservico-pagamento/techchallenge-microservico-pagamento.sln          
+          dotnet build ./src/techchallenge-microservico-pagamento/techchallenge-microservico-pagamento.sln --no-restore
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
