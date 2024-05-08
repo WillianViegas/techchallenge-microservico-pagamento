@@ -11,7 +11,7 @@ namespace techchallenge_ms_pagamento_test.Repositories
         public async Task GetCarrinhoById()
         {
             var carrinhoRepository = new Mock<ICarrinhoRepository>().Object;
-            var carrinho = GetPedidoObj();
+            var carrinho = GetCarrinhoObj();
             var idCarrinho = Guid.NewGuid().ToString();
             carrinho.Id = idCarrinho;
 
@@ -30,7 +30,7 @@ namespace techchallenge_ms_pagamento_test.Repositories
         public async Task UpdateCarrinho()
         {
             var carrinhoRepository = new Mock<ICarrinhoRepository>().Object;
-            var carrinho = GetPedidoObj();
+            var carrinho = GetCarrinhoObj();
             var idCarrinho = Guid.NewGuid().ToString();
             carrinho.Id = idCarrinho;
 
@@ -39,7 +39,7 @@ namespace techchallenge_ms_pagamento_test.Repositories
                 .Verifiable();
         }
 
-        private Carrinho GetPedidoObj()
+        private Carrinho GetCarrinhoObj()
         {
             var produtos = new List<Produto>();
             var produto = new Produto()
@@ -54,12 +54,14 @@ namespace techchallenge_ms_pagamento_test.Repositories
             produtos.Add(produto);
 
 
-            var carrinho = new Carrinho();
-            carrinho.Id = "";
-            carrinho.Total = 10.00m;
-            carrinho.Ativo = true;
-            carrinho.Produtos = produtos;
-            carrinho.Usuario = new Usuario();
+            var carrinho = new Carrinho()
+            {
+                Id = "",
+                Usuario = null,
+                Ativo = true,
+                Produtos = produtos,
+                Total = 10.00m
+            };
 
             return carrinho;
         }
