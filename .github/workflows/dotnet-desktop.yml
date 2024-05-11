@@ -27,6 +27,9 @@ jobs:
     - name: Build
       run: dotnet build ./src/techchallenge-microservico-pagamento/techchallenge-microservico-pagamento.sln --no-restore
 
+    - name: Tests
+      run: dotnet test ./src/techchallenge-microservico-pagamento/techchallenge-microservico-pagamento.sln
+
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
