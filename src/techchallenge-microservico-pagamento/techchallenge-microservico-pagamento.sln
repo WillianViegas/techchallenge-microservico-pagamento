@@ -17,11 +17,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Driven", "Driven", "{43960A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Driver", "Driver", "{8B712B65-110E-4F42-936D-918A24D868D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra", "Infra\Infra.csproj", "{9A4285E2-236C-491A-A6BC-F4D3831414DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infra", "Infra\Infra.csproj", "{9A4285E2-236C-491A-A6BC-F4D3831414DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{BA48CA05-F0A7-4DFE-AE10-C7C56DB1A46C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{BA48CA05-F0A7-4DFE-AE10-C7C56DB1A46C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{A2E05F00-C694-45B7-A1B0-0AB94CD147CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{A2E05F00-C694-45B7-A1B0-0AB94CD147CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecFlowBDDTests", "SpecFlowBDDTests\SpecFlowBDDTests.csproj", "{B4EBBAE1-B881-44CE-AD93-8693D2C393E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{A2E05F00-C694-45B7-A1B0-0AB94CD147CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2E05F00-C694-45B7-A1B0-0AB94CD147CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2E05F00-C694-45B7-A1B0-0AB94CD147CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4EBBAE1-B881-44CE-AD93-8693D2C393E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4EBBAE1-B881-44CE-AD93-8693D2C393E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4EBBAE1-B881-44CE-AD93-8693D2C393E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4EBBAE1-B881-44CE-AD93-8693D2C393E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
