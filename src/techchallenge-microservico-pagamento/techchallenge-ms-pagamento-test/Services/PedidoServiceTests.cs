@@ -14,7 +14,16 @@ namespace techchallenge_ms_pagamento_test.Services
             var pedido = GetPedidoObj();
             var pedidoService = new Mock<IPedidoService>().Object;
             var idPedido = Guid.NewGuid().ToString();
+
+            var pagamento = new Pagamento()
+            {
+                OrdemDePagamento = Guid.NewGuid().ToString(),
+                QRCodeUrl = "www.qrCode.com.br"
+            };
+
             pedido.Id = idPedido;
+            pedido.Status = EPedidoStatus.PendentePagamento;
+            pedido.Pagamento = pagamento;
 
             Mock.Get(pedidoService)
                 .Setup(service => service.FinalizarPedido(idPedido))
@@ -79,6 +88,7 @@ namespace techchallenge_ms_pagamento_test.Services
 
             produtos.Add(produto);
 
+          
 
             var pedido = new Pedido();
             pedido.Id = "";
