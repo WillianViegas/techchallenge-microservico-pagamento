@@ -6,6 +6,7 @@ namespace techchallenge_microservico_pagamento.Services.Interfaces
     {
         public Task<Pedido> FinalizarPedido(string id);
         public Task<Pedido> CreatePedido(Pedido pedido);
-        public Task<Pedido> GetPedidoById(string id);
+        public Task<Pedido> GetPedidoByIdOrigem(string id);
+        public Task RegistrarPedidos();
     }
 }

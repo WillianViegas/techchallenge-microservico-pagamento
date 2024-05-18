@@ -28,9 +28,9 @@ namespace techchallenge_microservico_pagamento.Repositories
             return await _collection.Find(_ => true).ToListAsync();
         }
 
-        public async Task<Pedido> GetPedidoById(string id)
+        public async Task<Pedido> GetPedidoByIdOrigem(string id)
         {
-            var pedido = await _collection.Find(x => x.Id.ToString() == id).FirstOrDefaultAsync();
+            var pedido = await _collection.Find(x => x.IdPedidoOrigem.ToString() == id).FirstOrDefaultAsync();
             return pedido;
         }
 
