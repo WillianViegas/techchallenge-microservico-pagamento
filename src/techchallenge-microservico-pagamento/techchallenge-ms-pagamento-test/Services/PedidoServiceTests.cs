@@ -60,15 +60,15 @@ namespace techchallenge_ms_pagamento_test.Services
             //arrange
             var pedido = GetPedidoObj();
             var pedidoService = new Mock<IPedidoService>().Object;
-            var idPedido = Guid.NewGuid().ToString();
-            pedido.Id = idPedido;
+            var idPedidoOrigem = Guid.NewGuid().ToString();
+            pedido.IdPedidoOrigem = idPedidoOrigem;
 
             Mock.Get(pedidoService)
-                .Setup(service => service.GetPedidoById(idPedido))
+                .Setup(service => service.GetPedidoByIdOrigem(idPedidoOrigem))
             .ReturnsAsync(pedido);
 
             //act
-            var result = await pedidoService.GetPedidoById(idPedido);
+            var result = await pedidoService.GetPedidoByIdOrigem(idPedidoOrigem);
 
             //assert
             Assert.NotNull(result);

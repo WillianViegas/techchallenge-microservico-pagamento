@@ -34,6 +34,29 @@ namespace techchallenge_microservico_pagamento.Controllers
         }
 
 
+        [HttpGet("/registrarPedidos")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        [SwaggerOperation(
+        Summary = "Finalizar pedido",
+        Description = "Finaliza o pedido gerando QRcode para pagamento")]
+        public async Task<IResult> RegistrarPedidos()
+        {
+            try
+            {
+                await _pedidoService.RegistrarPedidos();
+                return TypedResults.Ok($"Pedidos registrados");
+            }
+            catch (Exception ex)
+            {
+                var erro = $"Erro ao registrar pedidos";
+                _logger.LogError(erro, ex);
+                return TypedResults.Problem(erro);
+            }
+        }
+
         [HttpPost("/finalizarPedido")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
