@@ -22,7 +22,8 @@ namespace techchallenge_microservico_pagamento.Services
         private readonly ICarrinhoRepository _carrinhoRepository;
         private readonly bool _useLocalStack;
         private AmazonSQSClient _sqs;
-        private readonly string _queueUrl;
+        private readonly string _queueUrlRead;
+        private readonly string _queueUrlSend;
         private readonly bool _criarFila;
         private readonly bool _enviarMensagem;
         private readonly string _queueName;
@@ -41,7 +42,8 @@ namespace techchallenge_microservico_pagamento.Services
             _carrinhoRepository = carrinhoRepository;
             _useLocalStack = Convert.ToBoolean(useLocalStack);
             _criarFila = Convert.ToBoolean(criarFila);
-            _queueUrl = config.GetSection("QueueUrl").Value;
+            _queueUrlRead = config.GetSection("QueueUrlRead").Value;
+            _queueUrlSend = config.GetSection("QueueUrlSend").Value;
             _enviarMensagem = Convert.ToBoolean(enviarMensagem);
             _queueName = config.GetSection("SQSConfig").GetSection("TestQueueName").Value;
             _bucketName = config.GetSection("SQSExtendedClient").GetSection("S3Bucket").Value;
@@ -148,7 +150,7 @@ namespace techchallenge_microservico_pagamento.Services
                 var sqsConfiguration = new SQSConfiguration();
                 _sqs = await sqsConfiguration.ConfigurarSQS();
 
-                await sqsConfiguration.EnviarParaSQS(messageJson, _sqs);
+                await sqsConfiguration.EnviarParaSQS(messageJson, _sqs, _queueUrlSend);
             }
             else
             {
@@ -158,9 +160,9 @@ namespace techchallenge_microservico_pagamento.Services
                     await CreateMessageInQueueWithStatusASyncLocalStack(configSQS);
 
                 if (_enviarMensagem)
-                    await SendTestMessageAsyncLocalStack(_queueUrl, configSQS);
+                    await SendTestMessageAsyncLocalStack(_queueUrlSend, configSQS);
 
-                await configSQS.SendMessageAsync(_queueUrl, messageJson);
+                await configSQS.SendMessageAsync(_queueUrlSend, messageJson);
             }
         }
 
@@ -197,7 +199,7 @@ namespace techchallenge_microservico_pagamento.Services
 
                 var response = await _amazonSQS.ReceiveMessageAsync(new ReceiveMessageRequest
                 {
-                    QueueUrl = _queueUrl,
+                    QueueUrl = _queueUrlRead,
                     WaitTimeSeconds = 10,
                     AttributeNames = new List<string> { "ApproximateReceiveCount" },
                     MessageAttributeNames = new List<string> { "All" },
@@ -206,8 +208,8 @@ namespace techchallenge_microservico_pagamento.Services
 
                 if (response.HttpStatusCode != HttpStatusCode.OK)
                 {
-                    _logger.LogError($"Error creating the queue: {_queueUrl}!");
-                    throw new AmazonSQSException($"Failed to GetMessages for queue {_queueUrl}. Response: {response.HttpStatusCode}");
+                    _logger.LogError($"Error reading the queue: {_queueUrlRead}!");
+                    throw new AmazonSQSException($"Failed to GetMessages for queue {_queueUrlRead}. Response: {response.HttpStatusCode}");
                 }
 
                 foreach (var message in response.Messages)
@@ -223,13 +225,13 @@ namespace techchallenge_microservico_pagamento.Services
                     Console.WriteLine(message.Body);
                     _logger.LogInformation(message.Body);
 
-                    await _amazonSQS.DeleteMessageAsync(_queueUrl, message.ReceiptHandle);
+                    await _amazonSQS.DeleteMessageAsync(_queueUrlRead, message.ReceiptHandle);
                     _logger.LogInformation($"Message deleted");
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error processing messages for queue {_queueUrl}!");
+                _logger.LogError(ex, $"Error processing messages for queue {_queueUrlRead}!");
             }
         }
 

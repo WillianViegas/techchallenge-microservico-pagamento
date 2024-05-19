@@ -10,6 +10,6 @@ namespace Infra.SQS
     public interface ISQSConfiguration
     {
         public Task<AmazonSQSClient> ConfigurarSQS();
-        public Task EnviarParaSQS(string jsonMessage, AmazonSQSClient sqsclient);
+        public Task EnviarParaSQS(string jsonMessage, AmazonSQSClient sqsclient, string queueUrl);
     }
 }
