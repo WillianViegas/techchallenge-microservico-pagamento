@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-ms-pagamento
+  labels:
+    app: mongodb-ms-pagamento
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb-ms-pagamento
+  template:
+    metadata:
+      labels:
+        app: mongodb-ms-pagamento
+    spec:
+      containers:
+      - name: mongodb-ms-pagamento
+        image:  wviegas/tech-lanchonetetotem-rep:mongodb
+        ports:
+          - containerPort: 27017
+            protocol: TCP
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "250m"
+        readinessProbe:
+            tcpSocket:
+              port: 27017
+            initialDelaySeconds: 15
+            periodSeconds: 10
+        livenessProbe:
+            tcpSocket:
+              port: 27017
+            initialDelaySeconds: 15
+            periodSeconds: 10
+        envFrom:
+        - configMapRef:
+            name: my-config-pagamento
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-ms-pagamento
+spec:
+  selector:
+    app: mongodb-ms-pagamento
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017

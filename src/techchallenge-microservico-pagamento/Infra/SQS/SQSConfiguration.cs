@@ -39,16 +39,12 @@ namespace Infra.SQS
             return JsonConvert.DeserializeObject<SqsConnectionDetails>(secretString);
         }
 
-        public async Task EnviarParaSQS(string jsonMessage, AmazonSQSClient sqsclient)
+        public async Task EnviarParaSQS(string jsonMessage, AmazonSQSClient sqsclient, string queueUrl)
         {
             try
             {
-                var listQueueResponse = await sqsclient.ListQueuesAsync(new ListQueuesRequest());
-                foreach (var queueUrl in listQueueResponse.QueueUrls)
-                {
-                    Console.WriteLine($"SQS Queue URL: {queueUrl}");
-                    await sqsclient.SendMessageAsync(queueUrl, jsonMessage);
-                }
+                Console.WriteLine($"SQS Queue URL: {queueUrl}");
+                await sqsclient.SendMessageAsync(queueUrl, jsonMessage);
             }
             catch
             {
