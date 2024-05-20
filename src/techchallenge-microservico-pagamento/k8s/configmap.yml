@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config-pagamento
+data:
+  DatabaseConfig__ConnectionString: 'mongodb://admin:abc123!@mongodb-ms-pagamento:27017'
+  DatabaseConfig__DatabaseName: 'ms-pagamento-db'
+  DatabaseConfig__User: 'admin'
+  DatabaseConfig__Password: 'abc123!'
+  LocalStack__Config__LocalStackHost: 'localstack'
+  QueueUrlRead: ''
+  QueueUrlSend: ''
+  AWS_ACCESS_KEY_ID: ''
+  AWS_SECRET_ACCESS_KEY: ''
+  AWS_REGION: 'us-east-1'
+  MY_SECRET: ''
+  SERVICES: 'sqs, s3'
+  AWS_DEFAULT_REGION: 'us-east-1'
+  MONGO_INITDB_DATABASE: 'ms-pagamento-db'
+  MONGO_INITDB_ROOT_USERNAME: 'admin'
+  MONGO_INITDB_ROOT_PASSWORD: 'abc123!'
+  AWS_REGISTRY_URL: ''
+  DOCKER_HUB_URL: ''
