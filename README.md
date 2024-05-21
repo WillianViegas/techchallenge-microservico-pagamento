@@ -30,7 +30,7 @@ https://www.figma.com/board/foY2Q9t6aj6Gzv9WK8actk/Documenta%C3%A7%C3%A3o-Sistem
 
 Links para repositórios relacioados: 
 
-- techchallenge-microservico-pagamento (Microsserviço de Pedido):
+- techchallenge-microservico-pedido (Microsserviço de Pedido):
   - https://github.com/WillianViegas/techchallenge-microservico-pedido
 - techchallenge-microservico-producao (Microsserviço de Produção)
   - https://github.com/WillianViegas/techchallenge-microservico-producao
