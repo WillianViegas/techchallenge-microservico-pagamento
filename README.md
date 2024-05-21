@@ -28,7 +28,10 @@ Estrutura
 Fluxograma:
 https://www.figma.com/board/foY2Q9t6aj6Gzv9WK8actk/Documenta%C3%A7%C3%A3o-Sistema-DDD?node-id=0%3A1&t=oY6vBdqPodcM5LMR-1
 
-Links para repositórios relacioados: 
+Video explicando a estrutura:
+https://youtu.be/-OZgHsUoLkM
+
+Links para repositórios relacionados: 
 
 - techchallenge-microservico-pedido (Microsserviço de Pedido):
   - https://github.com/WillianViegas/techchallenge-microservico-pedido
