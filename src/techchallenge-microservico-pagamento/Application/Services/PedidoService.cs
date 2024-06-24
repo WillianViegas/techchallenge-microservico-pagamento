@@ -30,13 +30,15 @@ namespace techchallenge_microservico_pagamento.Services
         private readonly string _bucketName;
         private IAmazonSQS _amazonSQS;
         private IAmazonS3 _amazonS3;
+        private readonly ISQSConfiguration _sQSConfiguration;
 
-        public PedidoService(ILogger<PedidoService> logger, IPedidoRepository pedidoRepository, ICarrinhoRepository carrinhoRepository, IConfiguration config, IAmazonS3 s3, IAmazonSQS sqs)
+        public PedidoService(ILogger<PedidoService> logger, IPedidoRepository pedidoRepository, ICarrinhoRepository carrinhoRepository, IConfiguration config, IAmazonS3 s3, IAmazonSQS sqs, ISQSConfiguration sqsConfiguration)
         {
             var criarFila = config.GetSection("SQSConfig").GetSection("CreateTestQueue").Value;
             var enviarMensagem = config.GetSection("SQSConfig").GetSection("SendTestMessage").Value;
             var useLocalStack = config.GetSection("SQSConfig").GetSection("useLocalStack").Value;
 
+            _sQSConfiguration = sqsConfiguration;
             _logger = logger;
             _pedidoRepository = pedidoRepository;
             _carrinhoRepository = carrinhoRepository;
@@ -147,47 +149,21 @@ namespace techchallenge_microservico_pagamento.Services
         {
             if (!_useLocalStack)
             {
-                var sqsConfiguration = new SQSConfiguration();
-                _sqs = await sqsConfiguration.ConfigurarSQS();
+                _sqs = await _sQSConfiguration.ConfigurarSQS();
 
-                await sqsConfiguration.EnviarParaSQS(messageJson, _sqs, _queueUrlSend);
+                await _sQSConfiguration.EnviarParaSQS(messageJson, _sqs, _queueUrlSend);
             }
             else
             {
                 var configSQS = new AmazonSQSExtendedClient(_amazonSQS, new ExtendedClientConfiguration().WithLargePayloadSupportEnabled(_amazonS3, _bucketName));
 
                 if (_criarFila)
-                    await CreateMessageInQueueWithStatusASyncLocalStack(configSQS);
+                    await _sQSConfiguration.CreateMessageInQueueWithStatusASyncLocalStack(configSQS, _queueName);
 
                 if (_enviarMensagem)
-                    await SendTestMessageAsyncLocalStack(_queueUrlSend, configSQS);
+                    await _sQSConfiguration.SendTestMessageAsyncLocalStack(_queueUrlSend, configSQS);
 
                 await configSQS.SendMessageAsync(_queueUrlSend, messageJson);
-            }
-        }
-
-        async Task SendTestMessageAsyncLocalStack(string queue, AmazonSQSExtendedClient sqs)
-        {
-            var messageBody = new MessageBody();
-            messageBody.IdTransacao = Guid.NewGuid().ToString();
-            messageBody.idPedido = "65a315fadb1f522d916d9361";
-            messageBody.Status = "OK";
-            messageBody.DataTransacao = DateTime.Now;
-
-            var jsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(messageBody);
-
-            await sqs.SendMessageAsync(queue, jsonObj);
-        }
-
-        async Task CreateMessageInQueueWithStatusASyncLocalStack(AmazonSQSExtendedClient sqs)
-        {
-            var responseQueue = await sqs.CreateQueueAsync(new CreateQueueRequest(_queueName));
-
-            if (responseQueue.HttpStatusCode != HttpStatusCode.OK)
-            {
-                var erro = $"Failed to CreateQueue for queue {_queueName}. Response: {responseQueue.HttpStatusCode}";
-                //log.LogError(erro);
-                throw new AmazonSQSException(erro);
             }
         }
 
@@ -215,7 +191,7 @@ namespace techchallenge_microservico_pagamento.Services
                 foreach (var message in response.Messages)
                 {
 
-                    var obj = TratarMessage(message.Body);
+                    var obj = _sQSConfiguration.TratarMessage(message.Body);
 
                     if (obj == null)
                         continue;
@@ -234,29 +210,5 @@ namespace techchallenge_microservico_pagamento.Services
                 _logger.LogError(ex, $"Error processing messages for queue {_queueUrlRead}!");
             }
         }
-
-        private Pedido? TratarMessage(string body)
-        {
-            var obj = new Pedido();
-            try
-            {
-                obj = Newtonsoft.Json.JsonConvert.DeserializeObject<Pedido>(body);
-
-                if (string.IsNullOrEmpty(obj.Id))
-                {
-                    _logger.LogWarning($"TratarMessage: objeto não tinha id. Body: {body}");
-                    return null;
-                }
-
-            }
-            catch
-            {
-                _logger.LogError($"TratarMessage: erro ao deserializar json. Body: {body}");
-                return null;
-            }
-
-            return obj;
-        }
-
     }
 }

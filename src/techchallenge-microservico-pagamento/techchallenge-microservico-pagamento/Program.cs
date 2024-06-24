@@ -30,6 +30,7 @@ builder.Services.AddLocalStack(builder.Configuration);
 builder.Services.AddAWSServiceLocalStack<IAmazonSQS>();
 builder.Services.AddAWSServiceLocalStack<IAmazonS3>();
 builder.Services.AddTransient<ISQSConfiguration, SQSConfiguration>();
+builder.Services.AddHostedService<SqsListenerService>();
 
 builder.Services.AddTransient<ICarrinhoRepository, CarrinhoRepository>();
 builder.Services.AddTransient<IPedidoRepository, PedidoRepository>();
