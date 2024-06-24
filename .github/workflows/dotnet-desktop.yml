@@ -47,3 +47,47 @@ jobs:
         docker build -t ms-pagamento-img:latest -f techchallenge-microservico-pagamento/Dockerfile .
         docker tag ms-pagamento-img:latest ${{ secrets.AWS_REGISTRY_URL }}:ms-pagamento-img
         docker push ${{ secrets.AWS_REGISTRY_URL }}:ms-pagamento-img
+
+      # docker tag ms-pedido-img:latest ${{ secrets.DOCKER_HUB_URL }}:ms-pedido-img
+      # docker push ${{ secrets.DOCKER_HUB_URL }}:ms-pedido-img
+
+
+  override-configmap:
+    runs-on: ubuntu-latest
+    env:
+      QUEUE_URL: ${{ secrets.QUEUE_URL }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      MY_SECRET: ${{ secrets.MY_SECRET }}
+      AWS_REGISTRY_URL: ${{ secrets.AWS_REGISTRY_URL }}
+      DOCKER_HUB_URL: ${{ secrets.DOCKER_HUB_URL }}
+
+      run: |
+       echo "QUEUE_URL=${secrets.QUEUE_URL}" >> $GITHUB_ENV
+       echo "AWS_ACCESS_KEY_ID=${secrets.AWS_ACCESS_KEY_ID}" >> $GITHUB_ENV
+       echo "AWS_SECRET_ACCESS_KEY=${secrets.AWS_SECRET_ACCESS_KEY}" >> $GITHUB_ENV
+       echo "MY_SECRET=${secrets.MY_SECRET}" >> $GITHUB_ENV
+       echo "AWS_REGISTRY_URL=${secrets.AWS_REGISTRY_URL}" >> $GITHUB_ENV
+       echo "DOCKER_HUB_URL=${secrets.DOCKER_HUB_URL}" >> $GITHUB_ENV
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Read template file
+        id: read_template
+        run: echo "::set-output name=content::$(cat configmap_template.yaml)"
+
+      - name: Replace placeholders
+        id: replace_placeholders
+        run: |
+          echo "${{ inputs.content }}" \
+          > configmap.yaml
+
+      - name: Deploy to EKS
+        run: |
+         cd src
+         cd techchallenge-microservico-pagamento
+         aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
+         kubectl apply -f ./k8s/
+     

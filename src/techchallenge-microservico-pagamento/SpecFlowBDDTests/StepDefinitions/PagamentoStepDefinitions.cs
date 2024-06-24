@@ -11,7 +11,7 @@ namespace SpecFlowBDDTests.StepDefinitions
     [Binding]
     public class PagamentoStepDefinitions
     {
-        private string _idPedido;
+        private string _idPedidoOrigem;
         private string _pedidoJson;
         private Pedido _pedido;
 
@@ -26,7 +26,7 @@ namespace SpecFlowBDDTests.StepDefinitions
         [When(@"Recebo o id de referencia do pedido")]
         public void WhenReceboOIdDeReferenciaDoPedido()
         {
-            _idPedido = Guid.NewGuid().ToString();
+            _idPedidoOrigem = Guid.NewGuid().ToString();
             var pedido = Newtonsoft.Json.JsonConvert.DeserializeObject<Pedido>(_pedidoJson);
             _pedido = pedido;
         }
@@ -46,11 +46,11 @@ namespace SpecFlowBDDTests.StepDefinitions
 
             var pedidoService = new Mock<IPedidoService>().Object;
             Mock.Get(pedidoService)
-                .Setup(service => service.FinalizarPedido(_idPedido))
+                .Setup(service => service.FinalizarPedido(_idPedidoOrigem))
             .ReturnsAsync(_pedido);
 
             //act
-            var result = await pedidoService.FinalizarPedido(_idPedido);
+            var result = await pedidoService.FinalizarPedido(_idPedidoOrigem);
 
             //assert
             Assert.NotNull(result);
@@ -107,8 +107,8 @@ namespace SpecFlowBDDTests.StepDefinitions
         [When(@"Recebo o id de referencia para buscar o pedido")]
         public void WhenReceboOIdDeReferenciaParaBuscarPedido()
         {
-            _idPedido = Guid.NewGuid().ToString();
-            _pedido.Id = _idPedido;
+            _idPedidoOrigem = Guid.NewGuid().ToString();
+            _pedido.IdPedidoOrigem = _idPedidoOrigem;
         }
 
         [Then(@"Busco e retorno o respectivo pedido")]
@@ -118,11 +118,11 @@ namespace SpecFlowBDDTests.StepDefinitions
             var pedidoService = new Mock<IPedidoService>().Object;
 
             Mock.Get(pedidoService)
-                .Setup(service => service.GetPedidoById(_idPedido))
+                .Setup(service => service.GetPedidoByIdOrigem(_idPedidoOrigem))
             .ReturnsAsync(_pedido);
 
             //act
-            var result = await pedidoService.GetPedidoById(_idPedido);
+            var result = await pedidoService.GetPedidoByIdOrigem(_idPedidoOrigem);
 
             //assert
             Assert.NotNull(result);

@@ -17,5 +17,6 @@ namespace techchallenge_microservico_pagamento.Models
         public DateTime DataCriacao { get; set; }
         public string? IdCarrinho { get; set; }
         public Pagamento? Pagamento { get; set; }
+        public string? IdPedidoOrigem { get; set; }
     }
 }

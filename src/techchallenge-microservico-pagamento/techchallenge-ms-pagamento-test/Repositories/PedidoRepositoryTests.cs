@@ -73,15 +73,15 @@ namespace techchallenge_ms_pagamento_test.Repositories
         {
             var pedidoRepository = new Mock<IPedidoRepository>().Object;
             var pedido = GetPedidoObj();
-            var idPedido = Guid.NewGuid().ToString();
-            pedido.Id = idPedido;
+            var idPedidoOrigem = Guid.NewGuid().ToString();
+            pedido.IdPedidoOrigem = idPedidoOrigem;
 
             Mock.Get(pedidoRepository)
-              .Setup(rep => rep.GetPedidoById(idPedido))
+              .Setup(rep => rep.GetPedidoByIdOrigem(idPedidoOrigem))
                 .ReturnsAsync(pedido);
 
             //act
-            var result = await pedidoRepository.GetPedidoById(idPedido);
+            var result = await pedidoRepository.GetPedidoByIdOrigem(idPedidoOrigem);
 
             //assert
             Assert.NotNull(result);
