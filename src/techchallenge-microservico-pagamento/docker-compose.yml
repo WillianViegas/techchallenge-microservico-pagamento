@@ -1,0 +1,53 @@
+version: '3.4'
+
+services:
+  techchallenge-microservico-pagamento:
+    image: ${DOCKER_REGISTRY-}techchallengemicroservicopagamento
+    build:
+      context: .
+      dockerfile: techchallenge-microservico-pagamento/Dockerfile
+    ports:
+      - "7009:80"
+      - "7010:443"
+    networks:
+      - prod-network
+    environment:
+      DatabaseConfig__ConnectionString: 'mongodb://admin:abc123!@mongodb-ms-pagamento:27017'
+      DatabaseConfig__DatabaseName: 'ms-pagamento-db'
+      DatabaseConfig__User: 'admin'
+      QueueUrlRead: 'http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/teste'
+      QueueUrlSend: 'https://sqs.us-east-1.amazonaws.com/125762314119/fila-pagamento-gerado'
+      LocalStack__Config__LocalStackHost: 'localstack'
+      DatabaseConfig__Password: 'abc123!'
+      AWS_ACCESS_KEY_ID: ''
+      AWS_SECRET_ACCESS_KEY: ''
+      AWS_REGION: 'us-east-1'
+      MY_SECRET: ''
+    depends_on:
+      - mongodb
+      - localstack
+
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME-localstack_ms_pagamento}"
+    image: localstack/localstack:latest
+    ports:
+      - "4510-4559:4510-4559"
+      - "4566:4566"
+    networks:
+      - prod-network
+    environment:
+      AWS_DEFAULT_REGION: us-east-1
+      SERVICES: sqs, s3
+
+  mongodb:
+    image: mongo:latest
+    networks:
+      - prod-network
+    container_name: mongodb-ms-pagamento
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: 'admin'
+      MONGO_INITDB_ROOT_PASSWORD: 'abc123!'
+
+networks:
+  prod-network:
+    driver: bridge
