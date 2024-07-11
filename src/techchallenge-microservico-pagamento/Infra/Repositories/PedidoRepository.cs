@@ -36,7 +36,12 @@ namespace techchallenge_microservico_pagamento.Repositories
 
         public async Task UpdatePedido(string id, Pedido pedidoInput)
         {
-            await _collection.ReplaceOneAsync(x => x.Id.ToString() == id, pedidoInput);
+            await _collection.ReplaceOneAsync(x => x.IdPedidoOrigem.ToString() == id, pedidoInput);
+        }
+
+        public async Task DeletePedido(string pedidoId)
+        {
+            await _collection.DeleteOneAsync(x => x.Id == pedidoId);
         }
     }
 }

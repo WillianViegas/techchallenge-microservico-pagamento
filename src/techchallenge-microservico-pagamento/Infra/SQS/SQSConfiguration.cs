@@ -104,15 +104,48 @@ namespace Infra.SQS
 
         public async Task SendTestMessageAsyncLocalStack(string queue, AmazonSQSExtendedClient sqs)
         {
-            var messageBody = new MessageBody();
-            messageBody.IdTransacao = Guid.NewGuid().ToString();
-            messageBody.idPedido = "65a315fadb1f522d916d9361";
-            messageBody.Status = "OK";
-            messageBody.DataTransacao = DateTime.Now;
+            var messageBody = GerarMessageBody();
 
             var jsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(messageBody);
 
             await sqs.SendMessageAsync(queue, jsonObj);
+        }
+
+        public MessageBody GerarMessageBody()
+        {
+            var messageBody = new MessageBody();
+            messageBody.Id = "668765228949bcd28073e197";
+            messageBody.Numero = 0;
+
+            var produto = new Produto()
+            {
+                Id = "65a315a4db1f522d916d935a",
+                Nome = "Hamburguer especial da casa",
+                Descricao = "Hamburguer artesanal da casa com maionese caseira e molho secreto",
+                Preco = 35.99m,
+                CategoriaId = "65a315a4db1f522d916d9357"
+            };
+
+            messageBody.Produtos = new List<Produto>() { produto };
+
+            messageBody.Usuario = new Usuario()
+            {
+                Id = "65a315a4db1f522d916d9355",
+                Nome = "Marcos",
+                Email = "marcao@gmail.com",
+                CPF = "65139370000",
+                Tipo = null,
+                Senha = null
+            };
+
+            messageBody.Total = 35.99;
+            messageBody.Status = "1";
+            messageBody.DataTransacao = DateTime.Now;
+            messageBody.IdCarrinho = "";
+
+            messageBody.IdPedidoOrigem = "668763894d7e2544b98492cb";
+
+            return messageBody;
         }
 
         class SqsConnectionDetails
