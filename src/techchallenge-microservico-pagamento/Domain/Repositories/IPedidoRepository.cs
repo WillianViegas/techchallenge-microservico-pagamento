@@ -8,5 +8,6 @@ namespace techchallenge_microservico_pagamento.Repositories.Interfaces
         public Task<IList<Pedido>> GetAllPedidos();
         public Task<Pedido> GetPedidoByIdOrigem(string id);
         public Task UpdatePedido(string id, Pedido pedidoInput);
+        public Task DeletePedido(string pedidoId);
     }
 }

@@ -161,7 +161,7 @@ namespace techchallenge_microservico_pagamento.Services
                     await _sQSConfiguration.CreateMessageInQueueWithStatusASyncLocalStack(configSQS, _queueName);
 
                 if (_enviarMensagem)
-                    await _sQSConfiguration.SendTestMessageAsyncLocalStack(_queueUrlSend, configSQS);
+                    await _sQSConfiguration.SendTestMessageAsyncLocalStack(_queueUrlRead, configSQS);
 
                 await configSQS.SendMessageAsync(_queueUrlSend, messageJson);
             }
@@ -190,19 +190,30 @@ namespace techchallenge_microservico_pagamento.Services
 
                 foreach (var message in response.Messages)
                 {
+                    var pedido = new Pedido();
 
-                    var obj = _sQSConfiguration.TratarMessage(message.Body);
+                    try
+                    {
+                        var obj = _sQSConfiguration.TratarMessage(message.Body);
 
-                    if (obj == null)
-                        continue;
+                        if (obj == null)
+                            continue;
 
-                    //chamar confirmar pedido
-                    var pedido = await CreatePedido(obj);
-                    Console.WriteLine(message.Body);
-                    _logger.LogInformation(message.Body);
+                        //chamar confirmar pedido
+                        pedido = await CreatePedido(obj);
+                        Console.WriteLine(message.Body);
+                        _logger.LogInformation(message.Body);
 
-                    await _amazonSQS.DeleteMessageAsync(_queueUrlRead, message.ReceiptHandle);
-                    _logger.LogInformation($"Message deleted");
+                        await _amazonSQS.DeleteMessageAsync(_queueUrlRead, message.ReceiptHandle);
+                        _logger.LogInformation($"Message deleted");
+                    }
+                    catch (Exception ex)
+                    {
+                        if (pedido.Id != null)
+                            await _pedidoRepository.DeletePedido(pedido.Id);
+
+                        _logger.LogError(ex.Message);
+                    }
                 }
             }
             catch (Exception ex)

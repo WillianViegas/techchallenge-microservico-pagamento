@@ -87,24 +87,36 @@ namespace Infra.SQS
 
                     foreach (var message in receiveMessageResponse.Messages)
                     {
-                        _logger.LogInformation($"Received message: {message.Body}");
+                        var pedido = new Pedido();
 
-                        var obj = _sqsConfiguration.TratarMessage(message.Body);
-
-                        if (obj == null)
-                            continue;
-
-                        var pedido = await CreatePedido(obj);
-                        Console.WriteLine(message.Body);
-                        _logger.LogInformation(message.Body);
-
-                        var deleteMessageRequest = new DeleteMessageRequest
+                        try
                         {
-                            QueueUrl = _queueUrlRead,
-                            ReceiptHandle = message.ReceiptHandle
-                        };
+                            _logger.LogInformation($"Received message: {message.Body}");
 
-                        await _amazonSQS.DeleteMessageAsync(deleteMessageRequest, stoppingToken);
+                            var obj = _sqsConfiguration.TratarMessage(message.Body);
+
+                            if (obj == null)
+                                continue;
+
+                            pedido = await CreatePedido(obj);
+                            Console.WriteLine(message.Body);
+                            _logger.LogInformation(message.Body);
+
+                            var deleteMessageRequest = new DeleteMessageRequest
+                            {
+                                QueueUrl = _queueUrlRead,
+                                ReceiptHandle = message.ReceiptHandle
+                            };
+
+                            await _amazonSQS.DeleteMessageAsync(deleteMessageRequest, stoppingToken);
+                        }
+                        catch (Exception ex)
+                        {
+                            if (pedido.Id != null)
+                                await _pedidoRepository.DeletePedido(pedido.Id);
+
+                            _logger.LogError(ex.Message);
+                        }
                     }
 
                     await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
