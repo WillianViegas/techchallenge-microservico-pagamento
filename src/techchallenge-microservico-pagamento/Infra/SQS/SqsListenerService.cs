@@ -143,14 +143,10 @@ namespace Infra.SQS
                     {
                         var obj = _sqsConfiguration.TratarMessage(message.Body);
 
-                        try
-                        {
-                            _logger.LogInformation($"Received message: {message.Body}");
+                        _logger.LogInformation($"Received message: {message.Body}");
 
-                            var obj = _sqsConfiguration.TratarMessage(message.Body);
-
-                            if (obj == null)
-                                continue;
+                        if (obj == null)
+                            continue;
 
                         pedido = await CreatePedido(obj);
                         Console.WriteLine(message.Body);
