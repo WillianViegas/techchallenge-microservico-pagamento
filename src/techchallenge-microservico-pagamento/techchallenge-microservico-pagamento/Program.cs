@@ -26,15 +26,16 @@ builder.Services.AddSingleton<IMongoDatabase>(provider => provider.GetRequiredSe
 builder.Services.AddSingleton<IMongoCollection<Carrinho>>(provider => provider.GetRequiredService<IMongoDatabase>().GetCollection<Carrinho>("Carrinho"));
 builder.Services.AddSingleton<IMongoCollection<Pedido>>(provider => provider.GetRequiredService<IMongoDatabase>().GetCollection<Pedido>("Pedido"));
 
+builder.Services.AddTransient<ICarrinhoRepository, CarrinhoRepository>();
+builder.Services.AddTransient<IPedidoRepository, PedidoRepository>();
+builder.Services.AddTransient<IPedidoService, PedidoService>();
+
 builder.Services.AddLocalStack(builder.Configuration);
 builder.Services.AddAWSServiceLocalStack<IAmazonSQS>();
 builder.Services.AddAWSServiceLocalStack<IAmazonS3>();
 builder.Services.AddTransient<ISQSConfiguration, SQSConfiguration>();
 builder.Services.AddHostedService<SqsListenerService>();
 
-builder.Services.AddTransient<ICarrinhoRepository, CarrinhoRepository>();
-builder.Services.AddTransient<IPedidoRepository, PedidoRepository>();
-builder.Services.AddTransient<IPedidoService, PedidoService>();
 
 builder.Services.Configure<DatabaseConfig>(builder.Configuration.GetSection(nameof(DatabaseConfig)));
 builder.Services.AddSingleton<IDatabaseConfig>(sp => sp.GetRequiredService<IOptions<DatabaseConfig>>().Value);

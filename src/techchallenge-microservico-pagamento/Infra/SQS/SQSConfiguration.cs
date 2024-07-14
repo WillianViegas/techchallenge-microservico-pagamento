@@ -188,7 +188,6 @@ namespace Infra.SQS
             messageBody.Status = "1";
             messageBody.DataTransacao = DateTime.Now;
             messageBody.IdCarrinho = "";
-
             messageBody.IdPedidoOrigem = "668763894d7e2544b98492cb";
 
             return messageBody;
