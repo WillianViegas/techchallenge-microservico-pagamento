@@ -7,4 +7,12 @@
         public string Status { get; set; }
         public DateTime DataTransacao { get; set; }
     }
+
+    public class MessageBodyTransacaoPagamento
+    {
+        public string Id { get; set; }
+        public string OrderDePagamento { get; set; }
+        public string Status { get; set; }
+        public DateTime DataTransacao { get; set; }
+    }
 }

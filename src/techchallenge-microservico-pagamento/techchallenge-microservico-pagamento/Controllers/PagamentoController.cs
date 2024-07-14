@@ -77,7 +77,7 @@ namespace techchallenge_microservico_pagamento.Controllers
             }
             catch (Exception ex)
             {
-                var erro = $"Erro ao confirmar criar o pedido. Id: {id}";
+                var erro = $"Erro ao finalizar pedido. Id: {id}";
                 _logger.LogError(erro, ex);
                 return TypedResults.Problem(erro);
             }

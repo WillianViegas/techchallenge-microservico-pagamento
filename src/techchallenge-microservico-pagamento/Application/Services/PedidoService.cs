@@ -120,9 +120,6 @@ namespace techchallenge_microservico_pagamento.Services
                     await _carrinhoRepository.UpdateCarrinho(carrinho.Id, carrinho);
                 }
 
-                var messageJson = Newtonsoft.Json.JsonConvert.SerializeObject(pedido);
-                await EnviarMessageSQS(messageJson);
-
                 return pedido;
             }
             catch (Exception ex)

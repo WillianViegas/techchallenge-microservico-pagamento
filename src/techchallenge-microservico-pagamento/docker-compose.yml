@@ -16,6 +16,7 @@ services:
       DatabaseConfig__DatabaseName: 'ms-pagamento-db'
       DatabaseConfig__User: 'admin'
       QueueUrlRead: ''
+      QueueUrlRead2: ''
       QueueUrlSend: ''
       LocalStack__Config__LocalStackHost: 'localstack'
       DatabaseConfig__Password: 'abc123!'

@@ -34,6 +34,12 @@ namespace techchallenge_microservico_pagamento.Repositories
             return pedido;
         }
 
+        public async Task<Pedido> GetPedidoByOrdemDePagamento(string ordemDePagamento)
+        {
+            var pedido = await _collection.Find(x => x.Pagamento.OrdemDePagamento.ToString() == ordemDePagamento).FirstOrDefaultAsync();
+            return pedido;
+        }
+
         public async Task UpdatePedido(string id, Pedido pedidoInput)
         {
             await _collection.ReplaceOneAsync(x => x.Id.ToString() == id, pedidoInput);

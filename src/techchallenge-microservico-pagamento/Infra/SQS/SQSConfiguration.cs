@@ -43,7 +43,7 @@ namespace Infra.SQS
                 };
 
                 var sqsClient = new AmazonSQSClient(sqsConnectionDetails.AccessKeyId, sqsConnectionDetails.SecretAccessKey, sqsConfig);
-                
+
                 return sqsClient;
             }
         }
@@ -64,7 +64,7 @@ namespace Infra.SQS
             {
                 //logar
             }
-          
+
         }
 
         public Pedido? TratarMessage(string body)
@@ -73,6 +73,29 @@ namespace Infra.SQS
             try
             {
                 obj = Newtonsoft.Json.JsonConvert.DeserializeObject<Pedido>(body);
+
+                if (string.IsNullOrEmpty(obj.Id))
+                {
+                    _logger.LogWarning($"TratarMessage: objeto não tinha id. Body: {body}");
+                    return null;
+                }
+
+            }
+            catch
+            {
+                _logger.LogError($"TratarMessage: erro ao deserializar json. Body: {body}");
+                return null;
+            }
+
+            return obj;
+        }
+
+        public MessageBodyTransacaoPagamento? TratarMessageTransacaoPagamento(string body)
+        {
+            var obj = new MessageBodyTransacaoPagamento();
+            try
+            {
+                obj = Newtonsoft.Json.JsonConvert.DeserializeObject<MessageBodyTransacaoPagamento>(body);
 
                 if (string.IsNullOrEmpty(obj.Id))
                 {
@@ -104,15 +127,71 @@ namespace Infra.SQS
 
         public async Task SendTestMessageAsyncLocalStack(string queue, AmazonSQSExtendedClient sqs)
         {
-            var messageBody = new MessageBody();
-            messageBody.IdTransacao = Guid.NewGuid().ToString();
-            messageBody.idPedido = "65a315fadb1f522d916d9361";
-            messageBody.Status = "OK";
-            messageBody.DataTransacao = DateTime.Now;
+            var jsonObj = "";
 
-            var jsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(messageBody);
+            if (queue.Contains("pagamento"))
+            {
+                var messageBodyTransacaoPagamento = GerarMessageBodyTransacaoPagamento();
+                jsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(messageBodyTransacaoPagamento);
+            }
+            else
+            {
+                var messageBody = GerarMessageBody();
+                jsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(messageBody);
+            }
 
             await sqs.SendMessageAsync(queue, jsonObj);
+        }
+
+
+        public MessageBodyTransacaoPagamento GerarMessageBodyTransacaoPagamento()
+        {
+            var newTransacao = new MessageBodyTransacaoPagamento()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Status = "OK",
+                OrderDePagamento = "4afa1926-c9cb-499a-ae1e-393bef8b911c",
+                DataTransacao = DateTime.Now
+            };
+
+            return newTransacao;
+        }
+
+        public MessageBody GerarMessageBody()
+        {
+            var messageBody = new MessageBody();
+            messageBody.Id = "668765228949bcd28073e197";
+            messageBody.Numero = 0;
+
+            var produto = new Produto()
+            {
+                Id = "65a315a4db1f522d916d935a",
+                Nome = "Hamburguer especial da casa",
+                Descricao = "Hamburguer artesanal da casa com maionese caseira e molho secreto",
+                Preco = 35.99m,
+                CategoriaId = "65a315a4db1f522d916d9357"
+            };
+
+            messageBody.Produtos = new List<Produto>() { produto };
+
+            messageBody.Usuario = new Usuario()
+            {
+                Id = "65a315a4db1f522d916d9355",
+                Nome = "Marcos",
+                Email = "marcao@gmail.com",
+                CPF = "65139370000",
+                Tipo = null,
+                Senha = null
+            };
+
+            messageBody.Total = 35.99;
+            messageBody.Status = "1";
+            messageBody.DataTransacao = DateTime.Now;
+            messageBody.IdCarrinho = "";
+
+            messageBody.IdPedidoOrigem = "668763894d7e2544b98492cb";
+
+            return messageBody;
         }
 
         class SqsConnectionDetails

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using techchallenge_microservico_pagamento.Models;
+using techchallenge_microservico_pedido.Models;
 
 namespace Infra.SQS
 {
@@ -14,6 +15,7 @@ namespace Infra.SQS
         public Task<AmazonSQSClient> ConfigurarSQS();
         public Task EnviarParaSQS(string jsonMessage, AmazonSQSClient sqsclient, string queueUrl);
         public Pedido? TratarMessage(string body);
+        public MessageBodyTransacaoPagamento? TratarMessageTransacaoPagamento(string body);
         public Task CreateMessageInQueueWithStatusASyncLocalStack(AmazonSQSExtendedClient sqs, string queueName);
         public Task SendTestMessageAsyncLocalStack(string queue, AmazonSQSExtendedClient sqs);
     }
