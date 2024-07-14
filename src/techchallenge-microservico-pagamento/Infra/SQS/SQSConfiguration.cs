@@ -43,7 +43,7 @@ namespace Infra.SQS
                 };
 
                 var sqsClient = new AmazonSQSClient(sqsConnectionDetails.AccessKeyId, sqsConnectionDetails.SecretAccessKey, sqsConfig);
-                
+
                 return sqsClient;
             }
         }
@@ -64,7 +64,7 @@ namespace Infra.SQS
             {
                 //logar
             }
-          
+
         }
 
         public Pedido? TratarMessage(string body)
@@ -73,6 +73,29 @@ namespace Infra.SQS
             try
             {
                 obj = Newtonsoft.Json.JsonConvert.DeserializeObject<Pedido>(body);
+
+                if (string.IsNullOrEmpty(obj.Id))
+                {
+                    _logger.LogWarning($"TratarMessage: objeto não tinha id. Body: {body}");
+                    return null;
+                }
+
+            }
+            catch
+            {
+                _logger.LogError($"TratarMessage: erro ao deserializar json. Body: {body}");
+                return null;
+            }
+
+            return obj;
+        }
+
+        public MessageBodyTransacaoPagamento? TratarMessageTransacaoPagamento(string body)
+        {
+            var obj = new MessageBodyTransacaoPagamento();
+            try
+            {
+                obj = Newtonsoft.Json.JsonConvert.DeserializeObject<MessageBodyTransacaoPagamento>(body);
 
                 if (string.IsNullOrEmpty(obj.Id))
                 {
@@ -104,11 +127,34 @@ namespace Infra.SQS
 
         public async Task SendTestMessageAsyncLocalStack(string queue, AmazonSQSExtendedClient sqs)
         {
-            var messageBody = GerarMessageBody();
+            var jsonObj = "";
 
-            var jsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(messageBody);
+            if (queue.Contains("pagamento"))
+            {
+                var messageBodyTransacaoPagamento = GerarMessageBodyTransacaoPagamento();
+                jsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(messageBodyTransacaoPagamento);
+            }
+            else
+            {
+                var messageBody = GerarMessageBody();
+                jsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(messageBody);
+            }
 
             await sqs.SendMessageAsync(queue, jsonObj);
+        }
+
+
+        public MessageBodyTransacaoPagamento GerarMessageBodyTransacaoPagamento()
+        {
+            var newTransacao = new MessageBodyTransacaoPagamento()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Status = "OK",
+                OrderDePagamento = "4afa1926-c9cb-499a-ae1e-393bef8b911c",
+                DataTransacao = DateTime.Now
+            };
+
+            return newTransacao;
         }
 
         public MessageBody GerarMessageBody()
@@ -142,7 +188,6 @@ namespace Infra.SQS
             messageBody.Status = "1";
             messageBody.DataTransacao = DateTime.Now;
             messageBody.IdCarrinho = "";
-
             messageBody.IdPedidoOrigem = "668763894d7e2544b98492cb";
 
             return messageBody;
