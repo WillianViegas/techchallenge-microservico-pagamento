@@ -40,54 +40,85 @@ jobs:
     - name: Docker Login
       run: aws ecr get-login-password --region ${{secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{ secrets.AWS_REGISTRY_URL }}
 
-    - name: Build and Push Docker images
+    - name: Build and Push Docker Ecr images
+      id: build-and-push-ecr
       run: |
-        cd src
-        cd techchallenge-microservico-pagamento
-        docker build -t ms-pagamento-img:latest -f techchallenge-microservico-pagamento/Dockerfile .
-        docker tag ms-pagamento-img:latest ${{ secrets.AWS_REGISTRY_URL }}:ms-pagamento-img
-        docker push ${{ secrets.AWS_REGISTRY_URL }}:ms-pagamento-img
+        cd src/techchallenge-microservico-pagamento
+        TIMESTAMP=$(date +%Y%m%d%H%M%S)
+        echo "TIMESTAMP=${TIMESTAMP}" >> $GITHUB_ENV
+        docker build -t ms-pagamento-img:${TIMESTAMP} -f techchallenge-microservico-pagamento/Dockerfile .
+        docker tag ms-pagamento-img:${TIMESTAMP} ${{ secrets.AWS_REGISTRY_URL }}:ms-pagamento-img-${TIMESTAMP}
+        docker push ${{ secrets.AWS_REGISTRY_URL }}:ms-pagamento-img-${TIMESTAMP}
+        
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # docker tag ms-pedido-img:latest ${{ secrets.DOCKER_HUB_URL }}:ms-pedido-img
-      # docker push ${{ secrets.DOCKER_HUB_URL }}:ms-pedido-img
+    - name: Build and Push Docker Hub images
+      run: |
+        docker tag ms-pagamento-img:${{ env.TIMESTAMP }} ${{ secrets.DOCKER_HUB_URL }}:ms-pagamento-img-${{ env.TIMESTAMP }}
+        docker push ${{ secrets.DOCKER_HUB_URL }}:ms-pagamento-img-${{ env.TIMESTAMP }}
 
+    - name: Set AWS ConfigMap Variables
+      id: set-configmap-variables
+      run: |
+        echo "::set-output name=aws_access_key_id::${{ secrets.AWS_ACCESS_KEY_ID }}"
+        echo "::set-output name=aws_secret_access_key::${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+        echo "::set-output name=aws_region::${{ secrets.AWS_REGION }}"
+        echo "::set-output name=db_connection_string::${{ secrets.DB_CONNECTION_STRING }}"
+        echo "::set-output name=db_database_name::${{ secrets.DB_DATABASE_NAME }}"
+        echo "::set-output name=db_user::${{ secrets.DB_USER }}"
+        echo "::set-output name=db_password::${{ secrets.DB_PASSWORD }}"
+        echo "::set-output name=mongo_initdb_database::${{ secrets.MONGO_INITDB_DATABASE }}"
+        echo "::set-output name=mongo_initdb_root_username::${{ secrets.MONGO_INITDB_ROOT_USERNAME }}"
+        echo "::set-output name=mongo_initdb_root_password::${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}"
 
-  #override-configmap:
-    #runs-on: ubuntu-latest
-    #env:
-      #QUEUE_URL: ${{ secrets.QUEUE_URL }}
-      #AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #MY_SECRET: ${{ secrets.MY_SECRET }}
-      #AWS_REGISTRY_URL: ${{ secrets.AWS_REGISTRY_URL }}
-      #DOCKER_HUB_URL: ${{ secrets.DOCKER_HUB_URL }}
+    - name: Setup kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'v1.18.0'
 
-      #run: |
-       #echo "QUEUE_URL=${secrets.QUEUE_URL}" >> $GITHUB_ENV
-       #echo "AWS_ACCESS_KEY_ID=${secrets.AWS_ACCESS_KEY_ID}" >> $GITHUB_ENV
-       #echo "AWS_SECRET_ACCESS_KEY=${secrets.AWS_SECRET_ACCESS_KEY}" >> $GITHUB_ENV
-       #echo "MY_SECRET=${secrets.MY_SECRET}" >> $GITHUB_ENV
-       #echo "AWS_REGISTRY_URL=${secrets.AWS_REGISTRY_URL}" >> $GITHUB_ENV
-       #echo "DOCKER_HUB_URL=${secrets.DOCKER_HUB_URL}" >> $GITHUB_ENV
+    - name: Update kubeconfig
+      run: aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
 
-    #steps:
-      #- name: Checkout repository
-      #  uses: actions/checkout@v2
+    - name: Delete from EKS
+      run:  |
+         cd src
+         cd techchallenge-microservico-pagamento
+         kubectl delete -f ./k8s/ || true
 
-     # - name: Read template file
-     #   id: read_template
-      #  run: echo "::set-output name=content::$(cat configmap_template.yaml)"
+    - name: Update Kubernetes ConfigMap
+      run: |
+         kubectl create configmap my-config-cancelamento \
+          --from-literal=AWS_ACCESS_KEY_ID=${{ steps.set-configmap-variables.outputs.aws_access_key_id }} \
+          --from-literal=AWS_SECRET_ACCESS_KEY=${{ steps.set-configmap-variables.outputs.aws_secret_access_key }} \
+          --from-literal=AWS_REGION=${{ steps.set-configmap-variables.outputs.aws_region }} \
+          --from-literal=AWS_DEFAULT_REGION=${{ steps.set-configmap-variables.outputs.aws_region }} \
+          --from-literal=DatabaseConfig__ConnectionString=${{ steps.set-configmap-variables.outputs.db_connection_string }} \
+          --from-literal=DatabaseConfig__DatabaseName=${{ steps.set-configmap-variables.outputs.db_database_name }} \
+          --from-literal=DatabaseConfig__User=${{ steps.set-configmap-variables.outputs.db_user }} \
+          --from-literal=DatabaseConfig__Password=${{ steps.set-configmap-variables.outputs.db_password }} \
+          --from-literal=MONGO_INITDB_DATABASE=${{ steps.set-configmap-variables.outputs.mongo_initdb_database }} \
+          --from-literal=MONGO_INITDB_ROOT_USERNAME=${{ steps.set-configmap-variables.outputs.mongo_initdb_root_username }} \
+          --from-literal=MONGO_INITDB_ROOT_PASSWORD=${{ steps.set-configmap-variables.outputs.mongo_initdb_root_password }} \
+          --dry-run=client -o yaml | kubectl apply -f -
 
-     # - name: Replace placeholders
-       # id: replace_placeholders
-      #  run: |
-       #   echo "${{ inputs.content }}" \
-       #   > configmap.yaml
+    - name: Deploy to EKS
+      run:  |
+         cd src
+         cd techchallenge-microservico-pagamento
+         kubectl apply -f ./k8s/application-services.yml
+         kubectl apply -f ./k8s/application-config.yml
+         kubectl apply -f ./k8s/mongodb-config.yml
+         kubectl apply -f ./k8s/private-lb.yml
+         kubectl apply -f ./k8s/public-lb.yml
 
-     # - name: Deploy to EKS
-     #   run: |
-     #    cd src
-     #   cd techchallenge-microservico-pagamento
-      #   aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
-      #   kubectl apply -f ./k8s/
-     
+    - name: Update Kubernetes Deployment
+      run: |
+        kubectl set image deployment/techchallenge-microservico-pagamento techchallenge-microservico-pagamento=${{ secrets.AWS_REGISTRY_URL }}:ms-pagamento-img-${{ env.TIMESTAMP }}
+
+    - name: Rollout Restart
+      run: |
+        kubectl rollout restart deployment techchallenge-microservico-pagamento
