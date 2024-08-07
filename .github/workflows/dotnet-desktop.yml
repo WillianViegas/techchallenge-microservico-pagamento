@@ -91,7 +91,7 @@ jobs:
 
     - name: Update Kubernetes ConfigMap
       run: |
-         kubectl create configmap my-config-cancelamento \
+         kubectl create configmap my-config-pagamento \
           --from-literal=AWS_ACCESS_KEY_ID=${{ steps.set-configmap-variables.outputs.aws_access_key_id }} \
           --from-literal=AWS_SECRET_ACCESS_KEY=${{ steps.set-configmap-variables.outputs.aws_secret_access_key }} \
           --from-literal=AWS_REGION=${{ steps.set-configmap-variables.outputs.aws_region }} \
