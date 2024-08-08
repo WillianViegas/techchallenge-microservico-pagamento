@@ -19,6 +19,10 @@ services:
       QueueUrlRead2: ''
       QueueUrlSend: ''
       LocalStack__Config__LocalStackHost: 'localstack'
+      LocalStack__UseLocalStack: false
+      SQSConfig__UseLocalStack: false
+      SQSConfig__CreateTestQueue: false
+      SQSConfig__SendTestMessage: false
       DatabaseConfig__Password: 'abc123!'
       AWS_ACCESS_KEY_ID: ''
       AWS_SECRET_ACCESS_KEY: ''
