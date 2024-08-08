@@ -44,6 +44,8 @@ Links para repositórios relacionados:
   - https://github.com/WillianViegas/techchallenge-microservico-producao
 - TechChallenge-LanchoneteTotem (Repositório com o projeto que originou os microsserviços e histórico das fases):
   - https://github.com/WillianViegas/TechChallenge-LanchoneteTotem
+- MS-Cancelamento-Dados (Microsserviço de solicitação de exclusão de dados):
+  - https://github.com/WillianViegas/techchallenge-microservico-cancelamento-dados
  
 
 ## Rodando ambiente com Docker
