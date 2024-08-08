@@ -30,7 +30,7 @@ https://www.figma.com/board/foY2Q9t6aj6Gzv9WK8actk/Documenta%C3%A7%C3%A3o-Sistem
 
 Video explicando a estruturas
 - Fase 4 (Fase Passada): https://youtu.be/-OZgHsUoLkM
-- Fase 5 (Fase Atual): (Adicionar video)
+- Fase 5 (Fase Atual): https://youtu.be/_8Dvd5Me59w
 
 Link para os relatórios OWASP ZAP:
 - Vulnerabilidades: https://fiap-docs.s3.amazonaws.com/OWASP+ZAP+Relatorios/Vulnerabilidades/MS-Pagamento.html
