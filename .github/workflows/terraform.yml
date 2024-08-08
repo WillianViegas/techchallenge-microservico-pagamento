@@ -39,30 +39,30 @@ jobs:
         run: terraform plan
         working-directory: '${{ env.ROOT_PATH }}'
         
- # terraform-apply:
-     # name: 'Terraform apply'
-      #runs-on: ubuntu-latest
-     #needs: terraform-plan
-    # if: ${{ success() }}
+  terraform-apply:
+      name: 'Terraform apply'
+      runs-on: ubuntu-latest
+      needs: terraform-plan
+      if: ${{ success() }}
       
-     # environment: dev
-    #  defaults:
-     #   run:
-     #     shell: bash
+      environment: dev
+      defaults:
+        run:
+          shell: bash
           
-     # steps:
-      #  - name: Checkout
-     #     uses: actions/checkout@v4.1.1
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4.1.1
           
-     #  - name: Setup Terraform
-      #    uses: hashicorp/setup-terraform@v1
-     #    with:
-      #      cli_config_credentials_token: '${{ secrets.TF_API_TOKEN }}'
+        - name: Setup Terraform
+          uses: hashicorp/setup-terraform@v1
+          with:
+            cli_config_credentials_token: '${{ secrets.TF_API_TOKEN }}'
 
-      #  - name: Terraform Init
-      #   run: terraform init -reconfigure
-      #    working-directory: '${{ env.ROOT_PATH }}'
+        - name: Terraform Init
+          run: terraform init -reconfigure
+          working-directory: '${{ env.ROOT_PATH }}'
           
-       # - name: Terraform Apply
-      #    run: terraform apply -auto-approve
-      #    working-directory: '${{ env.ROOT_PATH }}'
+        - name: Terraform Apply
+          run: terraform apply -auto-approve
+          working-directory: '${{ env.ROOT_PATH }}'
